@@ -17,9 +17,12 @@ namespace NumberApp
         //global values that store the user's guess and actual secret number
         int secretNumber;
         int guess;
+        int count; //counts number of button clicks
         numberServices.Service1Client client = new numberServices.Service1Client();
 
-        public Form1()
+       
+
+    public Form1()
         {
             InitializeComponent();
         }
@@ -72,16 +75,44 @@ namespace NumberApp
 
         private void button2_Click(object sender, EventArgs e)
         {
-            guess = int.Parse(textBox3.Text); //value that the user guessed
+
+            if (label6.Text == "correct!") //if user already played once and guessed correctly erase all contents and start again
+            {
+
+                clearAll();
+
+            }
+
+            count++; //counts the click
+
+            if (textBox3.Text != "")
+            {
+                guess = int.Parse(textBox3.Text); //value that the user guessed
+
+            }
+           label6.Text = client.checkNumber(guess, secretNumber); //tells the user if they guessed correctly
+
+           label7.Text = count.ToString(); //update count label when click occurs
 
 
 
-           label6.Text = client.checkNumber(guess, secretNumber); //get secret number and display as label, tells the user if they guessed correctly
-            
-           
 
-        
+        }
 
+        public void clearAll()
+        {
+            int label7num = int.Parse(label7.Text);
+            count = 0;
+            textBox1.Text = "";
+            textBox2.Text = "";
+            label6.Text = "";
+            textBox3.Text = "";
+            label7num = 0;
+        }
+     
+
+    private void Form1_Load(object sender, EventArgs e)
+        {
 
         }
     }
